@@ -1,0 +1,15 @@
+@use '../app.scss' as *;
+ 
+:host { @extend %screen-host; }
+h2   { @extend %screen-heading; }
+hr   { @extend %screen-divider; }
+div  { @extend %form-card; }
+ 
+form                { @include admin-form; }
+table.mat-mdc-table { @include admin-table; }
+ 
+@include admin-responsive;
+ 
+::ng-deep {
+  @include mat-select-panel-dark;
+}

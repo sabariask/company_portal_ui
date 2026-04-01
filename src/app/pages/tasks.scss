@@ -1,0 +1,77 @@
+// tasks.component.scss
+@use '../app.scss' as *;
+
+:host { @extend %screen-host; }
+h2   { @extend %screen-heading; }
+hr   { @extend %screen-divider; }
+
+div { @extend %form-card; }
+
+form {
+  @include admin-form;
+
+  // Constrain field widths so dropdowns don't stretch full row
+  .mat-mdc-form-field {
+    flex: 1 1 180px;
+    max-width: 280px;
+  }
+
+  .mat-mdc-form-field:has(mat-select) {
+    flex: 1 1 160px;
+    max-width: 220px;
+  }
+
+  .mat-mdc-form-field:not(.mat-form-field-invalid.ng-touched) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $color-border !important;
+    }
+
+    .mat-mdc-floating-label {
+      color: $color-text-muted !important;
+    }
+
+    .mat-mdc-select-arrow {
+      color: #ffffff !important;
+    }
+
+    .mat-mdc-select-value-text {
+      color: #ffffff !important;
+    }
+  }
+}
+
+table.mat-mdc-table { @include admin-table; }
+@include table-select-inline;
+
+@include priority-badge;
+@include status-badge;
+
+td.mat-mdc-cell:last-child {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+::ng-deep {
+  @include mat-select-panel-dark;
+
+  // Global select value text color override
+  .table-select {
+    .mat-mdc-select-value-text,
+    .mdc-select__selected-text {
+      color: #ffffff !important;
+      font-weight: 500;
+      opacity: 1 !important;
+    }
+
+    .mat-mdc-select-arrow {
+      color: #ffffff !important;
+    }
+  }
+}
+
+@include admin-responsive;

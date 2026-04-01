@@ -1,0 +1,492 @@
+// ─── Design Tokens ───────────────────────────────────────────────────────────
+$color-bg:          #0f1623;
+$color-surface:     #1a2336;
+$color-surface-alt: #1e2a3d;
+$color-border:      #2a3a55;
+$color-accent:      #4f8ef7;
+$color-accent-glow: rgba(79, 142, 247, 0.18);
+$color-danger:      #f25f5c;
+$color-danger-glow: rgba(242, 95, 92, 0.15);
+$color-text:        #e8edf5;
+$color-text-muted:  #7a8aaa;
+$color-header-bg:   #141e30;
+
+$font-display: 'DM Sans', 'Segoe UI', sans-serif;
+$font-body:    'Inter', 'Segoe UI', sans-serif;
+$font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+$radius-sm:   6px;
+$radius-md:   10px;
+$radius-lg:   16px;
+$shadow-card: 0 4px 24px rgba(0, 0, 0, 0.35);
+$shadow-glow: 0 0 0 3px $color-accent-glow;
+
+@mixin card-surface {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+}
+
+// Solid accent primary button — must be defined before btn-page-action
+@mixin btn-primary-solid {
+  align-self: center;
+  padding: 0 1.5rem;
+  height: 44px;
+  font-family: $font-display;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: $radius-sm;
+  background: $color-accent !important;
+  color: #fff !important;
+  box-shadow: 0 2px 12px rgba(79, 142, 247, 0.35) !important;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 4px 20px rgba(79, 142, 247, 0.55) !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Standalone page-level CTA button (above tables, not inside a form)
+@mixin btn-page-action {
+  @include btn-primary-solid;
+  margin-bottom: 1.5rem;
+}
+
+// Ghost primary button (Edit / accent actions inside table cells)
+@mixin btn-primary-ghost {
+  font-family: $font-display;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0 1rem;
+  height: 34px;
+  border-radius: $radius-sm;
+  background: transparent !important;
+  color: $color-accent !important;
+  border: 1px solid rgba($color-accent, 0.4) !important;
+  box-shadow: none !important;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    background: $color-accent-glow !important;
+    border-color: $color-accent !important;
+    box-shadow: 0 2px 12px rgba($color-accent, 0.25) !important;
+  }
+}
+
+// Ghost danger button (Delete / warn actions inside table cells)
+@mixin btn-danger-ghost {
+  font-family: $font-display;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0 1rem;
+  height: 34px;
+  border-radius: $radius-sm;
+  background: transparent !important;
+  color: $color-danger !important;
+  border: 1px solid rgba($color-danger, 0.4) !important;
+  box-shadow: none !important;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    background: $color-danger-glow !important;
+    border-color: $color-danger !important;
+    box-shadow: 0 2px 12px rgba($color-danger, 0.25) !important;
+  }
+}
+
+// Host wrapper
+%screen-host {
+  display: block;
+  padding: 2.5rem 2rem;
+  background: $color-bg;
+  min-height: 100vh;
+  font-family: $font-body;
+  color: $color-text;
+}
+
+// Screen heading with accent underbar
+%screen-heading {
+  font-family: $font-display;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: $color-text;
+  margin: 0 0 1.75rem;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    display: block;
+    margin-top: 6px;
+    height: 3px;
+    width: 48px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, $color-accent, transparent);
+  }
+}
+
+// Divider
+%screen-divider {
+  border: none;
+  border-top: 1px solid $color-border;
+  margin: 1.5rem 0;
+}
+
+// Admin form card wrapper
+%form-card {
+  @include card-surface;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+//Shared Form Layout
+@mixin admin-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem;
+
+  .mat-mdc-form-field {
+    flex: 1 1 220px;
+    min-width: 180px;
+
+    // Default outline
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $color-border !important;
+      transition: border-color 0.2s ease;
+    }
+
+    // Hover outline
+    &:hover .mdc-notched-outline__leading,
+    &:hover .mdc-notched-outline__notch,
+    &:hover .mdc-notched-outline__trailing {
+      border-color: $color-accent !important;
+    }
+
+    // Input & select text
+    .mat-mdc-input-element,
+    .mat-mdc-select-value-text,
+    .mdc-select__anchor .mat-mdc-select-value-text {
+      color: #ffffff !important;
+      font-family: $font-body;
+      font-size: 0.9rem;
+      caret-color: $color-accent;
+    }
+
+    // Floating label
+    .mat-mdc-floating-label {
+      color: $color-text-muted !important;
+    }
+
+    // Focused state
+    &.mat-focused {
+      .mat-mdc-floating-label {
+        color: $color-accent !important;
+      }
+
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $color-accent !important;
+        border-width: 2px !important;
+      }
+
+      .mdc-notched-outline {
+        box-shadow: $shadow-glow;
+        border-radius: $radius-sm;
+      }
+    }
+
+    // Input background
+    .mdc-text-field--outlined {
+      background: $color-surface-alt;
+      border-radius: $radius-sm;
+    }
+
+    // Select trigger — closed state
+    .mat-mdc-select-trigger {
+      .mat-mdc-select-value-text {
+        color: #ffffff !important;
+        font-weight: 500;
+        opacity: 1 !important;
+      }
+    }
+
+    // Select value wrapper
+    .mdc-select__anchor {
+      .mat-mdc-select-value {
+        color: #ffffff !important;
+
+        .mat-mdc-select-value-text {
+          color: #ffffff !important;
+          opacity: 1 !important;
+        }
+      }
+    }
+
+    // Select arrow
+    .mat-mdc-select-arrow {
+      color: #ffffff !important;
+    }
+  }
+
+  button[type='submit'].mat-mdc-raised-button.mat-primary {
+    @include btn-primary-solid;
+  }
+}
+
+//Shared Table Layout
+@mixin admin-table {
+  width: 100%;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  tr.mat-mdc-header-row {
+    background: $color-header-bg;
+    height: 48px;
+  }
+
+  th.mat-mdc-header-cell {
+    font-family: $font-display;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $color-text-muted;
+    border-bottom: 1px solid $color-border;
+    padding: 0 1.25rem;
+  }
+
+  tr.mat-mdc-row {
+    height: 52px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: $color-surface-alt;
+    }
+
+    &:not(:last-child) td {
+      border-bottom: 1px solid rgba($color-border, 0.6);
+    }
+  }
+
+  td.mat-mdc-cell {
+    font-size: 0.875rem;
+    color: $color-text;
+    padding: 0 1.25rem;
+    border-bottom: none;
+
+    // ID column — monospace accent
+    &:first-child {
+      font-family: $font-mono;
+      font-size: 0.8rem;
+      color: $color-accent;
+    }
+  }
+
+  // Edit-style buttons inside cells
+  td button.mat-mdc-raised-button.mat-primary {
+    @include btn-primary-ghost;
+  }
+
+  // Delete-style buttons inside cells
+  td button.mat-mdc-raised-button.mat-warn {
+    @include btn-danger-ghost;
+  }
+}
+
+//Shared Responsive Rules
+@mixin admin-responsive {
+  @media (max-width: 600px) {
+    :host {
+      padding: 1.25rem 1rem;
+    }
+
+    form {
+      flex-direction: column;
+
+      .mat-mdc-form-field {
+        width: 100%;
+      }
+
+      button[type='submit'] {
+        width: 100%;
+      }
+    }
+
+    table.mat-mdc-table {
+      font-size: 0.8rem;
+
+      th.mat-mdc-header-cell,
+      td.mat-mdc-cell {
+        padding: 0 0.75rem;
+      }
+    }
+  }
+}
+
+@mixin mat-select-panel-dark {
+  .mat-mdc-select-panel {
+    background: $color-surface !important;
+    border: 1px solid $color-border;
+    border-radius: $radius-md !important;
+    box-shadow: $shadow-card !important;
+
+    .mat-mdc-option {
+      font-family: $font-body;
+      font-size: 0.875rem;
+      color: $color-text;
+
+      &:hover,
+      &.mat-mdc-option-active {
+        background: $color-surface-alt !important;
+      }
+
+      &.mdc-list-item--selected {
+        color: $color-accent !important;
+        background: $color-accent-glow !important;
+      }
+    }
+  }
+}
+
+@mixin priority-badge {
+  .priority-badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 99px;
+    font-family: $font-display;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    &.low {
+      background: rgba(52, 211, 153, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    &.medium {
+      background: rgba(251, 191, 36, 0.12);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    &.high {
+      background: rgba(242, 95, 92, 0.12);
+      color: $color-danger;
+      border: 1px solid rgba(242, 95, 92, 0.3);
+    }
+  }
+}
+
+//Status Badge
+@mixin status-badge {
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 99px;
+    font-family: $font-display;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    &.todo {
+      background: rgba(122, 138, 170, 0.12);
+      color: $color-text-muted;
+      border: 1px solid rgba(122, 138, 170, 0.3);
+    }
+
+    &.in-progress {
+      background: rgba(79, 142, 247, 0.12);
+      color: $color-accent;
+      border: 1px solid rgba(79, 142, 247, 0.3);
+    }
+
+    &.done {
+      background: rgba(52, 211, 153, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+  }
+}
+
+@mixin table-select-inline {
+  .table-select {
+    font-family: $font-body;
+    font-size: 0.82rem;
+    min-width: 130px;
+
+    // Hide Material underline — we style it ourselves
+    .mdc-line-ripple { display: none; }
+
+    .mat-mdc-select-trigger {
+      background: $color-surface-alt;
+      border: 1px solid $color-border;
+      border-radius: $radius-sm;
+      padding: 0.3rem 0.6rem;
+      transition: border-color 0.2s ease;
+
+      .mat-mdc-select-value-text {
+        color: #ffffff !important;
+        font-weight: 500;
+      }
+
+      .mdc-select__selected-text {
+        color: #ffffff !important;
+      }
+    }
+
+    &.mat-focused .mat-mdc-select-trigger,
+    &:hover .mat-mdc-select-trigger {
+      border-color: $color-accent;
+    }
+
+    .mat-mdc-select-value-text {
+      color: #ffffff !important;
+    }
+
+    .mdc-select__selected-text {
+      color: #ffffff !important;
+    }
+
+    .mat-mdc-select-arrow {
+      color: #ffffff !important;
+    }
+
+    &.mat-mdc-select-disabled .mat-mdc-select-trigger {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Global Material Select text color overrides
+::ng-deep {
+  .mat-mdc-form-field:not(.mat-form-field-invalid) {
+    .mat-mdc-select-value-text,
+    .mdc-select__selected-text {
+      color: #ffffff !important;
+      opacity: 1 !important;
+    }
+  }
+}

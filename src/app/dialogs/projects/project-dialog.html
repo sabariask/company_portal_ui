@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{ project.id ? 'Edit Project' : 'Create Project' }}</h2>
+
+<form (ngSubmit)="saveProject()" #f="ngForm" autocomplete="off">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Project Name</mat-label>
+    <input type="text" matInput name="name" required="true" [(ngModel)]="project.name" />
+    <mat-error *ngIf="!project.name"> Project name is required </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput rows="3" name="description" [(ngModel)]="project.description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Department</mat-label>
+    <mat-select required="true" name="departmentId" [(ngModel)]="project.departmentId">
+      <mat-option *ngFor="let d of data.departments" [value]="d.id">{{ d.name }}</mat-option>
+    </mat-select>
+
+    <mat-error *ngIf="!project.departmentId">Department is required</mat-error>
+  </mat-form-field>
+
+  <div align="end">
+    <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">Save</button>
+  </div>
+</form>

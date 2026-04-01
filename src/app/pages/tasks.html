@@ -1,0 +1,117 @@
+<h2>Tasks</h2>
+
+<div *ngIf="form && isManagerOrAdmin">
+  <form (ngSubmit)="createTask()" [formGroup]="form" autocomplete="off">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput required="true" formControlName="title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <input matInput type="text" formControlName="description" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Project</mat-label>
+      <mat-select formControlName="projectId" required="true">
+        @for (project of projects; track project.id) {
+          <mat-option [value]="project.id">{{ project.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Assign User</mat-label>
+      <mat-select formControlName="assignUser">
+        <mat-option value="null">Unassigned</mat-option>
+        @for (employee of employees; track employee.id) {
+          <mat-option [value]="employee.id">{{ employee.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status" [disabled]="!isManagerOrAdmin" required="true">
+        <mat-option value="TODO">TODO</mat-option>
+        <mat-option value="IN_PROGRESS">IN PROGRESS</mat-option>
+        <mat-option value="DONE">DONE</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Priority</mat-label>
+      <mat-select formControlName="priority" required="true">
+        <mat-option value="LOW">LOW</mat-option>
+        <mat-option value="MEDIUM">MEDIUM</mat-option>
+        <mat-option value="HIGH">HIGH</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Create</button>
+  </form>
+  <hr />
+</div>
+
+<table mat-table [dataSource]="tasks" class="mat-elevation-z8">
+  <ng-container matColumnDef="index">
+    <th mat-header-cell *matHeaderCellDef>No.</th>
+    <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>Title</th>
+    <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef>Description</th>
+    <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="priority">
+    <th mat-header-cell *matHeaderCellDef>Priority</th>
+    <td mat-cell *matCellDef="let element">
+      <span class="priority-badge" [ngClass]="element.priority.toLowerCase()">
+        {{ element.priority }}
+      </span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="assignedUserName">
+    <th mat-header-cell *matHeaderCellDef>Assigned User</th>
+    <td mat-cell *matCellDef="let element">{{ element.assignedUserName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      <mat-select
+        class="table-select"
+        [formControl]="getStatusControl(i)"
+        (selectionChange)="updateStatus(element, $event.value)"
+        [disabled]="!isManagerOrAdmin"
+      >
+        <mat-option value="TODO">TODO</mat-option>
+        <mat-option value="IN_PROGRESS">IN PROGRESS</mat-option>
+        <mat-option value="DONE">DONE</mat-option>
+      </mat-select>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let task">
+      <button *ngIf="isManagerOrAdmin" mat-raised-button color="warn" (click)="delete(task.id)">
+        Delete
+      </button>
+      <button *ngIf="isManagerOrAdmin" mat-raised-button color="primary" (click)="openCreateTask(task)">
+        Update Task
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

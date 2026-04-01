@@ -1,0 +1,230 @@
+// edit-employee-dialog.component.scss
+
+$dialog-bg:       #1c1a2e;
+$dialog-surface:  #242038;
+$amber:           #f5a623;
+$amber-glow:      rgba(245, 166, 35, 0.15);
+$rose:            #f25f7a;
+$rose-glow:       rgba(242, 95, 122, 0.12);
+$text-primary:    #eeeaf8;
+$text-muted:      rgba(238, 234, 248, 0.42);
+$border-idle:     rgba(255, 255, 255, 0.13);
+$input-bg:        rgba(255, 255, 255, 0.05);
+$font-display:    'DM Sans', 'Segoe UI', sans-serif;
+$font-body:       'Inter', 'Segoe UI', sans-serif;
+$radius:          8px;
+
+// ─── Host sizing ──────────────────────────────────────────────────────────────
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 1.5rem 1.75rem 1.25rem 1.75rem;
+  background: $dialog-bg;
+  font-family: $font-body;
+  color: $text-primary;
+  box-sizing: border-box;
+}
+
+// ─── Heading ──────────────────────────────────────────────────────────────────
+h2 {
+  font-family: $font-display;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(135deg, #fff 20%, $amber 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 36px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, $amber, $rose);
+  }
+}
+
+// ─── Form ─────────────────────────────────────────────────────────────────────
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// ─── All Material overrides via ::ng-deep ─────────────────────────────────────
+::ng-deep {
+
+  // ── Form field sizing & background ────────────────────────────────────────
+  .mat-mdc-dialog-container .mat-mdc-form-field,
+  .mdc-dialog__surface .mat-mdc-form-field {
+    width: 100%;
+
+    // Compact height
+    .mat-mdc-text-field-wrapper {
+      padding: 0 12px !important;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      min-height: unset !important;
+    }
+
+    // Dark background on all states
+    .mdc-text-field--outlined {
+      background-color: $input-bg !important;
+      border-radius: $radius !important;
+    }
+
+    // Kill white hover overlay
+    .mat-mdc-form-field-focus-overlay {
+      opacity: 0 !important;
+      background: transparent !important;
+    }
+
+    // Outline — idle
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $border-idle !important;
+      transition: border-color 0.2s ease;
+    }
+
+    // Outline — hover
+    &:hover {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: rgba(255, 255, 255, 0.28) !important;
+      }
+    }
+
+    // Outline + label — focused (amber)
+    &.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $amber !important;
+        border-width: 1.5px !important;
+      }
+      .mat-mdc-floating-label,
+      .mdc-floating-label {
+        color: $amber !important;
+      }
+    }
+
+    // Input text
+    .mat-mdc-input-element {
+      color: $text-primary !important;
+      caret-color: $amber !important;
+      font-size: 0.875rem !important;
+    }
+
+    // Label
+    .mat-mdc-floating-label,
+    .mdc-floating-label {
+      color: $text-muted !important;
+      font-size: 0.85rem !important;
+    }
+
+    // Select
+    .mat-mdc-select-value-text { color: #ffffff !important; font-weight: 500; }
+    .mat-mdc-select-arrow      { color: #ffffff !important; }
+
+    // No red before touch
+    &:not(.mat-form-field-invalid.ng-touched) {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $border-idle !important;
+      }
+      .mat-mdc-floating-label,
+      .mdc-floating-label {
+        color: $text-muted !important;
+      }
+    }
+  }
+
+  // ── Update button ──────────────────────────────────────────────────────────
+  button[type='submit'] {
+    height: 38px !important;
+    padding: 0 1.25rem !important;
+    font-family: $font-display !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    border-radius: $radius !important;
+    background: linear-gradient(135deg, $amber, darken($amber, 10%)) !important;
+    color: #1c1a2e !important;
+    box-shadow: 0 3px 16px rgba(245, 166, 35, 0.4) !important;
+    transition: box-shadow 0.2s ease, transform 0.15s ease !important;
+    border: none !important;
+    text-transform: none !important;
+
+    &:hover {
+      box-shadow: 0 5px 24px rgba(245, 166, 35, 0.6) !important;
+      transform: translateY(-1px);
+    }
+  }
+
+  // ── Cancel button ──────────────────────────────────────────────────────────
+  button[type='button'] {
+    height: 38px !important;
+    padding: 0 1.1rem !important;
+    font-family: $font-display !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    border-radius: $radius !important;
+    border: 1px solid rgba($rose, 0.4) !important;
+    background: transparent !important;
+    color: $rose !important;
+    transition: background 0.2s ease, border-color 0.2s ease !important;
+
+    &:hover {
+      background: $rose-glow !important;
+      border-color: $rose !important;
+    }
+  }
+
+  // ── Dropdown panel ────────────────────────────────────────────────────────
+  .mat-mdc-select-panel {
+    background: $dialog-surface !important;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+
+    .mat-mdc-option {
+      font-size: 0.875rem;
+      color: $text-primary;
+
+      &:hover,
+      &.mat-mdc-option-active {
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+
+      &.mdc-list-item--selected {
+        color: $amber !important;
+        background: $amber-glow !important;
+      }
+    }
+  }
+}
+
+// ─── Dialog actions row ───────────────────────────────────────────────────────
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}

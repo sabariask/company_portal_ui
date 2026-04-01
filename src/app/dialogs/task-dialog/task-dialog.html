@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Update Task</h2>
+
+<form #f="ngForm" (ngSubmit)="save()" autocomplete="off">
+  <mat-form-field>
+    <mat-label> Title </mat-label>
+    <input type="text" matInput required="true" name="title" [(ngModel)]="task.title" />
+    <mat-error *ngIf="!task.title">Title is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label> Description </mat-label>
+    <input type="text" matInput name="description" [(ngModel)]="task.description" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label> Priority </mat-label>
+    <mat-select [(ngModel)]="task.priority" name="priority">
+      <mat-option value="LOW">LOW</mat-option>
+      <mat-option value="MEDIUM">MEDIUM</mat-option>
+      <mat-option value="HIGH">HIGH</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Assign Employee</mat-label>
+    <mat-select [(ngModel)]="task.assignedUserId" name="assignedUserId">
+      <mat-option value="null">Unassigned</mat-option>
+      @for (employee of data.employees; track employee.id) {
+      <mat-option [value]="employee.id">{{ employee.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div align="end">
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">Update</button>
+  </div>
+</form>

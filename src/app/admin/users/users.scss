@@ -1,0 +1,8 @@
+// users.component.scss
+@use '../../app.scss' as *;
+ 
+:host               { @extend %screen-host; }
+h2                  { @extend %screen-heading; }
+table.mat-mdc-table { @include admin-table; }
+ 
+@include admin-responsive;

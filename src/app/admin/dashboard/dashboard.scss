@@ -1,0 +1,237 @@
+// dashboard.component.scss
+@use '../../app.scss' as *;
+
+//Host
+:host {
+  display: block;
+  background: $color-bg;
+  min-height: 100vh;
+  font-family: $font-body;
+  color: $color-text;
+}
+
+// Role title
+h2 {
+  font-family: $font-display;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  margin: 0;
+  padding: 0.6rem 2rem;
+  background: darken(#0f1623, 2%);
+  border-bottom: 1px solid $color-border;
+}
+
+// Top navigation bar
+header.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+  background: $color-surface;
+  border-bottom: 1px solid $color-border;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+// Left nav — section links
+  nav.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    a {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 0.85rem;
+      font-family: $font-display;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: $color-text-muted;
+      text-decoration: none;
+      border-radius: $radius-sm;
+      transition: color 0.2s ease, background 0.2s ease;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;      // sits on the header border
+        left: 0.85rem;
+        right: 0.85rem;
+        height: 2px;
+        border-radius: 1px;
+        background: $color-accent;
+        transform: scaleX(0);
+        transition: transform 0.2s ease;
+      }
+
+      &:hover {
+        color: $color-text;
+        background: $color-surface-alt;
+
+        &::after {
+          transform: scaleX(1);
+        }
+      }
+
+      // Active route highlight
+      &.active,
+      &.router-link-active {
+        color: $color-accent;
+        background: $color-accent-glow;
+
+        &::after {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+
+  // Right nav — logout button
+  nav.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .current-user {
+      font-family: $font-display;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: $color-accent;
+      padding: 0.35rem 0.85rem;
+      background: $color-accent-glow;
+      border: 1px solid rgba($color-accent, 0.3);
+      border-radius: $radius-sm;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: $color-accent;
+      }
+
+      &:hover {
+        background: rgba($color-accent, 0.15);
+        border-color: $color-accent;
+        box-shadow: 0 2px 8px rgba($color-accent, 0.2);
+      }
+    }
+
+    .logout-btn {
+      font-family: $font-display;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.35rem 1rem;
+      height: 32px;
+      border-radius: $radius-sm;
+      border: 1px solid rgba($color-danger, 0.4);
+      background: transparent;
+      color: $color-danger;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:hover {
+        background: $color-danger-glow;
+        border-color: $color-danger;
+        box-shadow: 0 2px 12px rgba($color-danger, 0.2);
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+  }
+}
+
+// Dashboard content area
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  min-height: calc(100vh - 56px - 40px); // viewport height - header - h2
+}
+
+.welcome-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 300px;
+  background: linear-gradient(135deg, rgba($color-accent, 0.08) 0%, rgba($color-accent, 0.04) 100%);
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-family: $font-display;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+    color: $color-text;
+
+    .username {
+      background: linear-gradient(135deg, $color-accent 0%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+  }
+
+  p {
+    font-family: $font-body;
+    font-size: 1.05rem;
+    color: $color-text-muted;
+    margin: 0;
+    line-height: 1.5;
+
+    strong {
+      color: $color-accent;
+      font-weight: 600;
+    }
+  }
+}
+
+router-outlet + * {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  h2 {
+    padding: 0.5rem 1rem;
+  }
+
+  header.top-bar {
+    flex-direction: column;
+    height: auto;
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+    align-items: flex-start;
+
+    nav.nav-left {
+      flex-wrap: wrap;
+      gap: 0.2rem;
+    }
+
+    nav.nav-right {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+}

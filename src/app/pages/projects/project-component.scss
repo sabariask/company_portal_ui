@@ -1,0 +1,56 @@
+// projects.component.scss
+@use '../../app.scss' as *;
+
+:host { @extend %screen-host; }
+hr   { @extend %screen-divider; }
+
+.page-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    font-family: $font-display;
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: $color-text;
+    margin: 0;           // no top/bottom margin — flex handles it
+    display: flex;
+    flex-direction: column;
+
+    // accent underbar as a sibling via ::after kept inline with flex column
+    &::after {
+      content: '';
+      display: block;
+      margin-top: 6px;
+      height: 3px;
+      width: 48px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, $color-accent, transparent);
+    }
+  }
+
+  button.mat-mdc-raised-button.mat-primary {
+    @include btn-primary-solid;
+    height: 36px;
+    padding: 0 1.1rem;
+    font-size: 0.8rem;
+    margin: 0;
+    flex-shrink: 0; 
+  }
+}
+
+table.mat-mdc-table { @include admin-table; }
+
+@include admin-responsive;
+
+@media (max-width: 600px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}

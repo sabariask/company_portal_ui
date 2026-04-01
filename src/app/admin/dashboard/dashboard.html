@@ -1,0 +1,48 @@
+<h2>{{ role }} DASHBOARD</h2>
+
+<header class="top-bar">
+  <nav class="nav-left">
+    <a *ngIf="role === 'ADMIN'" routerLink="/admin/users" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{ exact: true }">Users</a>
+    <a
+      *ngIf="role === 'ADMIN' || role === 'MANAGER'"
+      [routerLink]="role === 'ADMIN' ? '/admin/departments' : '/manager/departments'"
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Departments</a
+    >
+    <a
+      *ngIf="role === 'ADMIN' || role === 'MANAGER'"
+      [routerLink]="role === 'ADMIN' ? '/admin/employees' : '/manager/employees'"
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Employees</a
+    >
+    <a
+      *ngIf="role === 'ADMIN' || role === 'MANAGER'"
+      [routerLink]="role === 'ADMIN' ? '/admin/projects' : '/manager/projects'"
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Projects</a
+    >
+
+    <a
+      [routerLink]="role === 'ADMIN' || role === 'MANAGER' ? '/manager/tasks' : '/employee/tasks'"
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >{{ getTaskName() }}</a
+    >
+  </nav>
+
+  <nav class="nav-right">
+    <span class="current-user">{{ username }}</span>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </nav>
+</header>
+
+<div class="dashboard-content">
+  <div class="welcome-banner" *ngIf="showWelcome">
+    <h1>Welcome, <span class="username">{{ username }}</span>!</h1>
+    <p>You are logged in as <strong>{{ role }}</strong> • Select an option from the navigation menu to get started</p>
+  </div>
+  <router-outlet></router-outlet>
+</div>

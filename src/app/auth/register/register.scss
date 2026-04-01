@@ -1,0 +1,327 @@
+// ─── Design Tokens ────────────────────────────────────────────────────────────
+$register-bg-from: #0d0d1a;
+$register-bg-to:   #0a1628;
+$card-bg:       rgba(255, 255, 255, 0.04);
+$card-border:   rgba(255, 255, 255, 0.08);
+$card-shadow:   0 32px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+$teal:          #00e5c8;
+$violet:        #7c5cfc;
+$text-primary:  #f0f4ff;
+$text-muted:    rgba(240, 244, 255, 0.45);
+$border-idle:   rgba(255, 255, 255, 0.18);
+$input-bg:      rgba(255, 255, 255, 0.05);
+$input-bg-hover: rgba(255, 255, 255, 0.08);
+
+$font-display: 'DM Sans', 'Segoe UI', sans-serif;
+$font-body:    'Inter', 'Segoe UI', sans-serif;
+$radius-card:  20px;
+$radius-input: 10px;
+
+// ─── Full-page Layout ─────────────────────────────────────────────────────────
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: $font-body;
+  background: $register-bg-from;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124, 92, 252, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(0, 229, 200, 0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 60% 40%, rgba(0, 100, 255, 0.08) 0%, transparent 50%),
+      linear-gradient(160deg, $register-bg-from 0%, $register-bg-to 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    top: -180px;
+    left: -120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 92, 252, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: orb-drift 12s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes orb-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(40px, 30px) scale(1.08); }
+}
+
+.register-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.75rem 2.5rem 2.5rem;
+  background: $card-bg;
+  border: 1px solid $card-border;
+  border-radius: $radius-card;
+  box-shadow: $card-shadow;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  animation: card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $teal, transparent);
+    border-radius: 1px;
+  }
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+// ─── Heading ──────────────────────────────────────────────────────────────────
+h2 {
+  font-family: $font-display;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.4rem;
+  background: linear-gradient(135deg, #ffffff 30%, $teal 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  &::after {
+    content: '';
+    display: block;
+    margin-top: 10px;
+    height: 2px;
+    width: 36px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, $teal, $violet);
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: unset;
+  }
+}
+
+// ─── Form ─────────────────────────────────────────────────────────────────────
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 1.75rem;
+}
+
+// ─── Material Input Overrides via ::ng-deep ───────────────────────────────────
+// ng-deep is required to pierce Material's component encapsulation for inputs
+::ng-deep .register-container {
+
+  // Wrapper background — always dark, every state
+  .mat-mdc-text-field-wrapper,
+  .mdc-text-field--outlined {
+    background-color: $input-bg !important;
+    border-radius: $radius-input !important;
+  }
+
+  // Kill the white state-layer overlay Material injects on hover/focus
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent !important;
+    opacity: 0 !important;
+  }
+
+  // Hover — slightly brighter but still dark
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover {
+    .mat-mdc-form-field-focus-overlay {
+      opacity: 0 !important;
+    }
+  }
+
+  .mat-mdc-text-field-wrapper:hover .mdc-text-field--outlined {
+    background-color: $input-bg-hover !important;
+  }
+
+  // Outline border — idle
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: $border-idle !important;
+    transition: border-color 0.25s ease, border-width 0.25s ease;
+  }
+
+  // Outline border — hover
+  .mat-mdc-form-field:hover {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba(255, 255, 255, 0.35) !important;
+    }
+  }
+
+  // Outline border — focused
+  .mat-mdc-form-field.mat-focused {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $teal !important;
+      border-width: 1.5px !important;
+    }
+
+    .mdc-notched-outline {
+      filter: drop-shadow(0 0 8px rgba(0, 229, 200, 0.3));
+    }
+  }
+
+  // Input text colour
+  .mat-mdc-input-element {
+    color: $text-primary !important;
+    caret-color: $teal !important;
+    font-family: $font-body !important;
+    font-size: 0.9rem !important;
+
+    // Password dots also need to be light
+    &[type='password'] {
+      color: $text-primary !important;
+    }
+  }
+
+  // Floating label
+  .mat-mdc-floating-label,
+  .mdc-floating-label {
+    color: $text-muted !important;
+  }
+
+  // Focused label
+  .mat-mdc-form-field.mat-focused .mat-mdc-floating-label,
+  .mat-mdc-form-field.mat-focused .mdc-floating-label {
+    color: $teal !important;
+  }
+
+  // Suppress red invalid state until user has touched the field
+  .mat-mdc-form-field:not(.mat-form-field-invalid.ng-touched) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $border-idle !important;
+    }
+
+    .mat-mdc-floating-label,
+    .mdc-floating-label {
+      color: $text-muted !important;
+    }
+  }
+
+  button[type='submit'].mat-mdc-raised-button {
+    margin-top: 0.75rem;
+    width: 100%;
+    height: 48px;
+    font-family: $font-display !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase;
+    border-radius: $radius-input !important;
+    background: linear-gradient(135deg, $teal 0%, #00b8a0 50%, $violet 100%) !important;
+    background-size: 200% 200% !important;
+    color: #0d0d1a !important;
+    box-shadow: 0 4px 24px rgba(0, 229, 200, 0.3) !important;
+    transition: box-shadow 0.3s ease, transform 0.2s ease !important;
+
+    &:hover {
+      box-shadow: 0 6px 32px rgba(0, 229, 200, 0.5) !important;
+      transform: translateY(-2px);
+      background-position: right center !important;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    // Make sure ripple doesn't go outside border radius
+    .mat-mdc-button-ripple,
+    .mat-ripple {
+      border-radius: $radius-input;
+    }
+  }
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: $text-muted;
+    white-space: nowrap;
+    font-family: $font-body;
+    letter-spacing: 0.02em;
+  }
+}
+
+.login-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  height: 44px;
+  font-family: $font-display;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: $radius-input;
+  border: 1px solid rgba($teal, 0.35);
+  background: transparent;
+  color: $teal;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease,
+              box-shadow 0.25s ease, transform 0.15s ease;
+
+  &:hover {
+    background: rgba($teal, 0.08);
+    border-color: $teal;
+    box-shadow: 0 0 20px rgba(0, 229, 200, 0.15);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ─── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .register-container {
+    margin: 1rem;
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
+    max-width: 100%;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+}

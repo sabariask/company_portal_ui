@@ -1,0 +1,40 @@
+<h2>Edit Employee</h2>
+
+<form (ngSubmit)="save($event)" #f="ngForm" autocomplete="off">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Employee Name</mat-label>
+    <input matInput [(ngModel)]="data.name" name="name" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Employee Email</mat-label>
+    <input matInput type="text" [(ngModel)]="data.email" name="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Employee Phone</mat-label>
+    <input matInput type="number" [(ngModel)]="data.phone" name="phone" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Employee Designation</mat-label>
+    <input matInput type="text" [(ngModel)]="data.designation" name="designation" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Department</mat-label>
+    <mat-select [(ngModel)]="data.departmentId" name="departmentId">
+      <mat-option [value]="null">Select Department</mat-option>
+      @for (department of data.departments; track department.id) {
+        <mat-option [value]="department.id">{{ department.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div class="dialog-actions">
+    <button mat-raised-button color="primary" type="submit">Update</button>
+    <button mat-button type="button" (click)="dialodRef.close()">Cancel</button>
+  </div>
+
+</form>
